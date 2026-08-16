@@ -1,19 +1,24 @@
 from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
+import base64
 import secrets
 
-chave = Fernet.generate_key()
+length = 32 # 32 bytes para a chave
+salt = secrets.token_bytes(32) # 32 bytes aleatórios
+algoritmo = hashes.SHA256()
+iterations = 310_000
 
-objeto = Fernet(chave)
+senha_mestre = "MinhaSenhaMestre123"
 
-mensagem = "Minha senha teste"
+kdf = PBKDF2HMAC(algoritmo, length, salt, iterations)
 
-mensagem_criptografada = objeto.encrypt(mensagem.encode()) # encode transforma o texto em bytes
+chave_derivada = kdf.derive(senha_mestre.encode())
 
-mensagem_descriptografada = objeto.decrypt(mensagem_criptografada).decode() # transforma bytes em texto
+chave_fernet = base64.urlsafe_b64encode(chave_derivada)
 
-salt = secrets.token_bytes(32)
+print(Fernet(chave_fernet))
 
-algoritmo = hashes.SHA256
+mensagem = "receba"
 
+mensagem_criptografada = 
