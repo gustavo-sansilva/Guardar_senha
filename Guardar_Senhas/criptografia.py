@@ -11,14 +11,19 @@ iterations = 310_000
 
 senha_mestre = "MinhaSenhaMestre123"
 
-kdf = PBKDF2HMAC(algoritmo, length, salt, iterations)
+def gerar_chave(senha_mestre, salt):
 
-chave_derivada = kdf.derive(senha_mestre.encode())
+    kdf = PBKDF2HMAC(algoritmo, length, salt, iterations)
 
-chave_fernet = base64.urlsafe_b64encode(chave_derivada)
+    chave_derivada = kdf.derive(senha_mestre.encode())
 
-print(Fernet(chave_fernet))
+    chave_fernet = base64.urlsafe_b64encode(chave_derivada)
+    objetoFernet = Fernet(chave_fernet)
+    return objetoFernet
 
-mensagem = "receba"
+objetoFernet = gerar_chave(senha_mestre, salt)
 
-mensagem_criptografada = 
+def criptografar(mensagem, objetoFernet):
+    mensagem_bytes = mensagem.encode()
+    mensagem_criptografada = objetoFernet.encrypt(mensagem_bytes)
+    return mensagem_criptografada
