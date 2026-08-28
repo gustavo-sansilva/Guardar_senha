@@ -21,3 +21,12 @@ if senha_mestre is None:
     print("\n❌ Não foi possível continuar.")
 else:
     print("\n✅ Autenticação concluída")
+
+arquivo_salt = pasta_dados / "salt.bin"
+
+if arquivo_salt.exists():
+    print("Arquivo existe")
+else:
+    print("Arquivo inexistente")
+
+    
