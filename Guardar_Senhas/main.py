@@ -1,5 +1,8 @@
 from pathlib import Path
 from autenticacao import criar_senha_mestre
+from criptografia import gerar_chave
+from criptografia import criptografar
+import secrets
 
 print("=" * 20)
 print("  COFRE DE SENHAS  ")
@@ -24,9 +27,17 @@ else:
 
 arquivo_salt = pasta_dados / "salt.bin"
 
+# Anotar como isso daqui funciona
+
 if arquivo_salt.exists():
+    with open(arquivo_salt, "rb") as arquivo:
+        salt = arquivo.read()
     print("Arquivo existe")
 else:
-    print("Arquivo inexistente")
+    salt = secrets.token_bytes(32)
+    with open(arquivo_salt, "wb") as arquivo:
+        arquivo.write(salt)
 
-    
+objetoFernet = gerar_chave(senha_mestre, salt)
+
+criptografar()
