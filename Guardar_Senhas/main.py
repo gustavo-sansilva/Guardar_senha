@@ -2,6 +2,7 @@ from pathlib import Path
 from autenticacao import criar_senha_mestre
 from criptografia import gerar_chave
 from criptografia import criptografar
+from criptografia import descriptografar
 import secrets
 
 print("=" * 20)
@@ -26,13 +27,13 @@ else:
     print("\n✅ Autenticação concluída")
 
 arquivo_salt = pasta_dados / "salt.bin"
+arquivo_senhas = pasta_dados / "senhas.bin"
 
-# Anotar como isso daqui funciona
+# Anotar como isso daqui funciona = Verificação se o arquivo do salt existe
 
 if arquivo_salt.exists():
     with open(arquivo_salt, "rb") as arquivo:
         salt = arquivo.read()
-    print("Arquivo existe")
 else:
     salt = secrets.token_bytes(32)
     with open(arquivo_salt, "wb") as arquivo:
@@ -40,4 +41,30 @@ else:
 
 objetoFernet = gerar_chave(senha_mestre, salt)
 
-criptografar()
+# Anotar como isso daqui funciona = Verificação se o arquivo de senha existe
+
+site = "Google"
+usuario = "Gustavo"
+senha = "asdasdasda"
+informacoes = site + "|" + usuario + "|" + senha
+print("Informações: ", informacoes)
+
+if arquivo_senhas.exists():
+    with open (arquivo_senhas, "rb") as arquivo:
+        dados = arquivo.read()
+        
+    print(dados)
+    dados_descripto = descriptografar(dados, objetoFernet)
+    print(dados_descripto)
+else:
+    with open(arquivo_senhas, "wb") as arquivo:
+        teste_cripto = criptografar(informacoes, objetoFernet)
+        arquivo.write(teste_cripto)
+
+
+mensagem = "aaa"
+
+resultado = criptografar(mensagem, objetoFernet)
+
+mensagem_descriptografada = descriptografar(resultado, objetoFernet)
+
