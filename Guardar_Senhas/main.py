@@ -3,7 +3,9 @@ from autenticacao import criar_senha_mestre
 from criptografia import gerar_chave
 from criptografia import criptografar
 from criptografia import descriptografar
+from criptografia import salvar_senhas
 import secrets
+import json
 
 print("=" * 20)
 print("  COFRE DE SENHAS  ")
@@ -46,19 +48,28 @@ objetoFernet = gerar_chave(senha_mestre, salt)
 site = "Google"
 usuario = "Gustavo"
 senha = "asdasdasda"
-informacoes = site + "|" + usuario + "|" + senha
-print("Informações: ", informacoes)
+
+informacoes = {
+    "site": site,
+    "usuario": usuario,
+    "senha": senha
+}
+
+print(informacoes)
+informacoes_json = json.dumps(informacoes)
+
+teste_cripto = criptografar(informacoes_json, objetoFernet)
+
+print(teste_cripto)
 
 if arquivo_senhas.exists():
     with open (arquivo_senhas, "rb") as arquivo:
         dados = arquivo.read()
         
-    print(dados)
     dados_descripto = descriptografar(dados, objetoFernet)
-    print(dados_descripto)
 else:
     with open(arquivo_senhas, "wb") as arquivo:
-        teste_cripto = criptografar(informacoes, objetoFernet)
+        teste_cripto = criptografar(informacoes_json, objetoFernet)
         arquivo.write(teste_cripto)
 
 

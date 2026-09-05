@@ -2,6 +2,7 @@ from cryptography.fernet import Fernet
 from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 import base64
+import json
 
 # EXPLICAR NO NOTION -> PARAMETROS DO KDF
 
@@ -37,3 +38,12 @@ def descriptografar(resultado, objetoFernet):
     mensagem_descriptografada = objetoFernet.decrypt(resultado)
     mensagem_texto = mensagem_descriptografada.decode()
     return mensagem_texto
+
+# EXPLICAR NO NOTION -> COMO FUNCIONA A FUNÇÃO SALVAR SENHAS
+
+def salvar_senhas(informacoes, objetoFernet, arquivo_senhas):
+    informacoes_json = json.dumps(informacoes)
+    dados_criptografados = criptografar(informacoes_json, objetoFernet)
+
+    with open(arquivo_senhas, "wb") as arquivo:
+        arquivo.write(dados_criptografados)
