@@ -7,6 +7,12 @@ from criptografia import salvar_senhas
 import secrets
 import json
 
+def adicionar_senha():
+    site = input("Digite o site: ")
+    usuario = input("Digite o usuario/email: ")
+    senha = input("Digite a senha: ")
+    return site, usuario, senha
+
 print("=" * 20)
 print("  COFRE DE SENHAS  ")
 print("=" * 20 )
@@ -45,37 +51,30 @@ objetoFernet = gerar_chave(senha_mestre, salt)
 
 # Anotar como isso daqui funciona = Verificação se o arquivo de senha existe
 
-site = "Google"
-usuario = "Gustavo"
-senha = "asdasdasda"
-
-informacoes = {
-    "site": site,
-    "usuario": usuario,
-    "senha": senha
-}
-
-print(informacoes)
-informacoes_json = json.dumps(informacoes)
-
-teste_cripto = criptografar(informacoes_json, objetoFernet)
-
-print(teste_cripto)
-
 if arquivo_senhas.exists():
     with open (arquivo_senhas, "rb") as arquivo:
         dados = arquivo.read()
         
     dados_descripto = descriptografar(dados, objetoFernet)
+    informacoes = json.loads(dados_descripto)
+    print(informacoes)
 else:
-    with open(arquivo_senhas, "wb") as arquivo:
-        teste_cripto = criptografar(informacoes_json, objetoFernet)
-        arquivo.write(teste_cripto)
+    informacoes = []
 
+print("1 - Adicionar senha")
+print("2 - Listar senhas")
+print("3 - Sair")
 
-mensagem = "aaa"
+opcao = input("Digite uma opção: ")
 
-resultado = criptografar(mensagem, objetoFernet)
+if opcao == "1":
+    print("Você escolheu adicionar uma senha")
+    site, usuario, senha = adicionar_senha()
 
-mensagem_descriptografada = descriptografar(resultado, objetoFernet)
+    informacoes.append({
+        "site": site,
+        "usuario": usuario,
+        "senha": senha
+    })
 
+    salvar_senhas(informacoes, objetoFernet, arquivo_senhas)

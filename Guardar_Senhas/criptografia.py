@@ -47,3 +47,5 @@ def salvar_senhas(informacoes, objetoFernet, arquivo_senhas):
 
     with open(arquivo_senhas, "wb") as arquivo:
         arquivo.write(dados_criptografados)
+
+    print("Senha salva com sucesso")
