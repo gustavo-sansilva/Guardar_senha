@@ -1,7 +1,6 @@
 from pathlib import Path
-from autenticacao import criar_senha_mestre
+from autenticacao import criar_senha_mestre, verificar_senha_mestre
 from criptografia import gerar_chave
-from criptografia import criptografar
 from criptografia import descriptografar
 from criptografia import salvar_senhas
 import secrets
@@ -27,15 +26,20 @@ else:
     pasta_dados.mkdir(exist_ok=True, parents=True)
     print("\nPasta criada")
 
-senha_mestre = criar_senha_mestre()
+arquivo_salt = pasta_dados / "salt.bin"
+arquivo_senhas = pasta_dados / "senhas.bin"
+arquivo_senha_mestre = pasta_dados / "senha_mestre.bin"
+
+if arquivo_senha_mestre.exists():
+    senha_mestre = verificar_senha_mestre()
+else:
+    senha_mestre = criar_senha_mestre()
+
 
 if senha_mestre is None:
     print("\n❌ Não foi possível continuar.")
 else:
     print("\n✅ Autenticação concluída")
-
-arquivo_salt = pasta_dados / "salt.bin"
-arquivo_senhas = pasta_dados / "senhas.bin"
 
 # Anotar como isso daqui funciona = Verificação se o arquivo do salt existe
 
@@ -57,7 +61,6 @@ if arquivo_senhas.exists():
         
     dados_descripto = descriptografar(dados, objetoFernet)
     informacoes = json.loads(dados_descripto)
-    print(informacoes)
 else:
     informacoes = []
 
@@ -65,10 +68,10 @@ print("1 - Adicionar senha")
 print("2 - Listar senhas")
 print("3 - Sair")
 
-opcao = input("Digite uma opção: ")
+opcao = input("\nDigite uma opção: ")
 
 if opcao == "1":
-    print("Você escolheu adicionar uma senha")
+    print("\nVocê escolheu adicionar uma senha")
     site, usuario, senha = adicionar_senha()
 
     informacoes.append({
@@ -78,3 +81,11 @@ if opcao == "1":
     })
 
     salvar_senhas(informacoes, objetoFernet, arquivo_senhas)
+elif opcao == "2":
+    for senha in informacoes:
+        print("\nSite:", senha['site'])
+        print("Usuario: ", senha['usuario'])
+        print("Senha: ", senha['senha'])
+        print("-" * 20)
+elif opcao == "3":
+    print("\nSaindo do cofre...")
