@@ -5,14 +5,20 @@ from criptografia import descriptografar
 from criptografia import salvar_senhas
 import secrets
 import json
+import getpass
 
 def adicionar_senha():
     site = input("Digite o site: ")
     usuario = input("Digite o usuario/email: ")
-    senha = input("Digite a senha: ")
+    senha = getpass.getpass("Digite a senha: ")
+    confirmar_senha = getpass.getpass("Confirme a senha: ")
 
     if not site or not usuario or not senha:
         print("As informações não podem ficar vazias")
+        return None
+
+    if senha != confirmar_senha:
+        print("As senhas não são iguais.")
         return None
     
     return site, usuario, senha
@@ -114,10 +120,9 @@ while True:
         if not informacoes:
             print('\nNenhuma Senha cadastrada.')
         else:
-            for senha in informacoes:
+            for numero, senha in enumerate(informacoes, start=1):
                 print("\nSite:", senha['site'])
                 print("Usuario: ", senha['usuario'])
-                print("Senha: ", senha['senha'])
                 print("-" * 20)
 
     elif opcao == "3":
