@@ -91,13 +91,18 @@ if arquivo_senhas.exists():
 else:
     informacoes = []
 
+#Bloco de Escolher informações das senhas
+
 while True:
 
     print("1 - Adicionar senha")
     print("2 - Listar senhas")
-    print("3 - Sair")
+    print("3 - Editar senha")
+    print("4 - Sair")
 
     opcao = input("\nDigite uma opção: ")
+
+# Opção 1
 
     if opcao == "1":
         print("\nVocê escolheu adicionar uma senha")
@@ -116,16 +121,57 @@ while True:
 
         salvar_senhas(informacoes, objetoFernet, arquivo_senhas)
 
+# Opção 2
+
     elif opcao == "2":
         if not informacoes:
             print('\nNenhuma Senha cadastrada.')
         else:
             for numero, senha in enumerate(informacoes, start=1):
-                print("\nSite:", senha['site'])
+                print(f"\n{numero} - Site:", senha['site'])
                 print("Usuario: ", senha['usuario'])
                 print("-" * 20)
+            try:
+                escolha = int(input("\nDigite o número da senha que deseja visualizar: "))
+            except ValueError:
+                print("Digite apenas um número.")
+                continue
+
+            if escolha >= 1 and escolha <= len(informacoes):
+                indice = escolha - 1
+                entrada = informacoes[indice]
+
+                print("Site: ", entrada["site"])
+                print("Usuario: ", entrada["usuario"])
+
+                confirmar = input("Deseja visualizar a senha? (s/n): ").islower()
+
+                if confirmar == "s":
+                    print("Senha: ", entrada["senha"])
+                elif confirmar == "n":
+                    print("Senha não exibida")
+                else:
+                    print("Digite apenas S ou N.")
+
+            else:
+                print("Número inválido")
+
+# Opção 3
 
     elif opcao == "3":
+        print("\nVocê escolheu editar uma senha")
+
+        if not informacoes:
+            print("\nNenhuma senha cadastrada.")
+        else:
+            for numero, senha in enumerate(informacoes, start=1):
+                print(f"\n{numero} - Site:", senha["site"])
+                print("Usuario:", senha["usuario"])
+                print("-" * 20)
+
+# Opção 4
+
+    elif opcao == "4":
         print("\nSaindo do cofre...")
         break
     else:
