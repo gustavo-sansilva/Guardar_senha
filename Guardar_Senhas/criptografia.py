@@ -3,6 +3,7 @@ from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
 from cryptography.hazmat.primitives import hashes
 import base64
 import json
+import secrets
 
 # EXPLICAR NO NOTION -> PARAMETROS DO KDF
 
@@ -49,3 +50,27 @@ def salvar_senhas(informacoes, objetoFernet, arquivo_senhas):
         arquivo.write(dados_criptografados)
 
     print("Senha salva com sucesso")
+
+# CARREGAR SALT
+
+def carregar_salt(arquivo_salt):
+
+    with open(arquivo_salt, "rb") as arquivo:
+        salt = arquivo.read()
+
+    return salt
+
+def salvar_salt(arquivo_salt, salt):
+
+    with open(arquivo_salt, "wb") as arquivo:
+        arquivo.write(salt)
+
+def inicializar_salt(arquivo_salt):
+
+    if arquivo_salt.exists():
+        salt = carregar_salt(arquivo_salt)
+
+    else:
+        salt = secrets.token_bytes(32)
+        salvar_salt(arquivo_salt, salt)
+    return salt

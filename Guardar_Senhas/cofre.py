@@ -1,9 +1,28 @@
 import getpass
-from criptografia import salvar_senhas 
+import json
+from criptografia import salvar_senhas
+from criptografia import descriptografar
 
-# ADICIONAR     
+# CARREGA AS INFORMAÇÕES
 
-def adicionar_senha():
+def carregar_senhas(arquivo_senhas, objetoFernet):
+
+    if arquivo_senhas.exists():
+        with open(arquivo_senhas, "rb") as arquivo:
+            dados = arquivo.read()
+
+        dados_descripto = descriptografar(dados, objetoFernet)
+        informacoes = json.loads(dados_descripto)
+
+        return informacoes
+
+    else:
+        return []
+
+# ADICIONAR
+
+def adicionar_senha(informacoes, objetoFernet, arquivo_senhas):
+
     site = input("Digite o site: ")
     usuario = input("Digite o usuario/email: ")
     senha = getpass.getpass("Digite a senha: ")
@@ -16,8 +35,14 @@ def adicionar_senha():
     if senha != confirmar_senha:
         print("As senhas não são iguais.")
         return None
-    
-    return site, usuario, senha
+
+    informacoes.append({
+        "site": site,
+        "usuario": usuario,
+        "senha": senha
+    })
+
+    salvar_senhas(informacoes, objetoFernet, arquivo_senhas)
 
 # LISTAR
 

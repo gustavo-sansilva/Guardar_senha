@@ -28,3 +28,35 @@ def verificar_senha_mestre(salt, verificador_salvo):
     if verificador == verificador_salvo:
 
         return senha
+
+def carregar_senha_mestre(arquivo_senha_mestre):
+    with open(arquivo_senha_mestre, "rb") as arquivo:
+        dados_mestre = arquivo.read()
+
+    salt_mestre = dados_mestre[:32] # Pega os primeiros 32 bytes do arquivo.
+    verificador_salvo = dados_mestre[32:] # Pega do byte 32 até o final.
+    
+    return salt_mestre, verificador_salvo
+
+def salvar_senha_mestre(arquivo_senha_mestre, salt_mestre, verificador):
+
+    with open(arquivo_senha_mestre, "wb") as arquivo:
+        arquivo.write(salt_mestre)
+        arquivo.write(verificador)
+
+def inicializar_senha_mestre(arquivo_senha_mestre):
+
+    if arquivo_senha_mestre.exists():
+        salt_mestre, verificador_salvo = carregar_senha_mestre(arquivo_senha_mestre)
+        senha_mestre = verificar_senha_mestre(salt_mestre, verificador_salvo)
+
+    else:
+        resultado = criar_senha_mestre()
+
+        if resultado is None:
+            return None
+
+        senha_mestre, salt_mestre, verificador = resultado
+        salvar_senha_mestre(arquivo_senha_mestre, salt_mestre, verificador)
+
+    return senha_mestre
