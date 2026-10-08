@@ -1,4 +1,4 @@
-# 🔐 Cofre de Senhas
+# Cofre de Senhas
 
 Um cofre de senhas desenvolvido em Python para armazenar e gerenciar credenciais de forma local e criptografada.
 
