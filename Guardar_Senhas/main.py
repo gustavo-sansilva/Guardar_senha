@@ -1,6 +1,6 @@
 from pathlib import Path
-from autenticacao import inicializar_senha_mestre
-from criptografia import gerar_chave, inicializar_salt
+from autenticacao import inicializar_senha_mestre, alterar_senha_mestre, salvar_senha_mestre
+from criptografia import gerar_chave, inicializar_salt, salvar_senhas
 from cofre import adicionar_senha, listar_senhas, editar_senha, excluir_senha, pesquisar_senha, carregar_senhas
 
 print("=" * 20)
@@ -43,7 +43,8 @@ while True:
     print("3 - Editar senha")
     print("4 - Excluir senha")
     print("5 - Pesquisar senha")
-    print("6 - Sair")
+    print("6 - Alterar senha mestre")
+    print("7 - Sair")
 
     opcao = input("\nDigite uma opção: ")
 
@@ -80,6 +81,24 @@ while True:
 # Opção 6
 
     elif opcao == "6":
+        print("\nVocê escolheu alterar a senha mestre")
+
+        resultado = alterar_senha_mestre(arquivo_senha_mestre)
+
+        if resultado is not None:
+            nova_senha, salt_novo, verificador_novo = resultado
+            objetoFernet = gerar_chave(nova_senha, salt)
+
+            try:
+                salvar_senhas(informacoes, objetoFernet, arquivo_senhas)
+            except:
+                print("\nErro ao salvar o cofre.")
+            else:
+                salvar_senha_mestre(arquivo_senha_mestre,salt_novo,verificador_novo)
+
+# Opção 7
+
+    elif opcao == "7":
         print("\nSaindo do cofre...")
         break
     else:

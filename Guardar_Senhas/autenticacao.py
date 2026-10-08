@@ -60,3 +60,24 @@ def inicializar_senha_mestre(arquivo_senha_mestre):
         salvar_senha_mestre(arquivo_senha_mestre, salt_mestre, verificador)
 
     return senha_mestre
+
+def alterar_senha_mestre(arquivo_senha_mestre):
+    salt_mestre, verificador_salvo = carregar_senha_mestre(arquivo_senha_mestre)
+
+    senha_atual = verificar_senha_mestre(salt_mestre, verificador_salvo)
+
+    if senha_atual is None:
+        print("\nSenha mestre incorreta.")
+        return
+
+    nova_senha = getpass.getpass("Digite a nova senha mestre: ")
+    confirmar_nova_senha = getpass.getpass("Confirme a nova senha mestre: ")
+
+    if nova_senha != confirmar_nova_senha:
+        print("\nAs novas senhas não são iguais.")
+        return
+
+    salt_novo = secrets.token_bytes(32)
+    verificador_novo = gerar_verificador(nova_senha, salt_novo)
+
+    return nova_senha, salt_novo, verificador_novo
