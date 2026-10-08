@@ -51,5 +51,4 @@ Cofre-de-Senhas/
 ├── criptografia.py
 ├── cofre.py
 ├── LICENSE
-├── README.md
-└── .gitignore
+└── README.md
