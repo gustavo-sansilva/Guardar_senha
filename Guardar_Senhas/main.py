@@ -94,7 +94,8 @@ while True:
             except:
                 print("\nErro ao salvar o cofre.")
             else:
-                salvar_senha_mestre(arquivo_senha_mestre,salt_novo,verificador_novo)
+                salvar_senha_mestre(arquivo_senha_mestre, salt_novo, verificador_novo)
+                senha_mestre = nova_senha
 
 # Opção 7
 

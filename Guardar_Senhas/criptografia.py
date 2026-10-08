@@ -5,13 +5,13 @@ import base64
 import json
 import secrets
 
-# EXPLICAR NO NOTION -> PARAMETROS DO KDF
+# PARAMETROS DO KDF
 
 length = 32 # 32 bytes para a chave / Define o tamanho da chave derivada em bytes.
 algoritmo = hashes.SHA256() # Define o SHA-256 como algoritmo de hash do PBKDF2.
 iterations = 310_000 # Define quantas vezes o PBKDF2 repete o processo de derivação.
 
-# EXPLICAR NO NOTION -> COMO FUNCIONA A FUNÇÃO GERAR_CHAVE
+# FUNÇÃO GERAR_CHAVE
 
 def gerar_chave(senha_mestre, salt): # explicar os parametros da função
 
@@ -24,7 +24,7 @@ def gerar_chave(senha_mestre, salt): # explicar os parametros da função
     return objetoFernet # Devolve o objeto Fernet para quem chamou a função.
 
 
-# EXPLICAR NO NOTION -> COMO FUNCIONA A FUNÇÃO CRIPTOGRAFAR
+# FUNÇÃO CRIPTOGRAFAR
 
 def criptografar(mensagem, objetoFernet):
 
@@ -32,7 +32,7 @@ def criptografar(mensagem, objetoFernet):
     mensagem_criptografada = objetoFernet.encrypt(mensagem_bytes)
     return mensagem_criptografada
 
-# EXPLICAR NO NOTION -> COMO FUNCIONA A FUNÇÃO CRIPTOGRAFAR
+# FUNÇÃO DESCRIPTOGRAFAR
 
 def descriptografar(resultado, objetoFernet):
 
@@ -40,7 +40,7 @@ def descriptografar(resultado, objetoFernet):
     mensagem_texto = mensagem_descriptografada.decode()
     return mensagem_texto
 
-# EXPLICAR NO NOTION -> COMO FUNCIONA A FUNÇÃO SALVAR SENHAS
+# FUNÇÃO SALVAR SENHAS
 
 def salvar_senhas(informacoes, objetoFernet, arquivo_senhas):
     informacoes_json = json.dumps(informacoes)
