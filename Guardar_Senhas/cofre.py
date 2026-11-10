@@ -23,17 +23,17 @@ def carregar_senhas(arquivo_senhas, objetoFernet):
 
 def adicionar_senha(informacoes, objetoFernet, arquivo_senhas):
 
-    site = input("Digite o site: ")
-    usuario = input("Digite o usuario/email: ")
+    site = input("\nDigite o site: ")
+    usuario = input("\nDigite o usuario/email: ")
     senha = getpass.getpass("Digite a senha: ")
     confirmar_senha = getpass.getpass("Confirme a senha: ")
 
     if not site or not usuario or not senha:
-        print("As informações não podem ficar vazias")
+        print("\nAs informações não podem ficar vazias")
         return None
 
     if senha != confirmar_senha:
-        print("As senhas não são iguais.")
+        print("\nAs senhas não são iguais.")
         return None
 
     informacoes.append({
@@ -64,20 +64,20 @@ def listar_senhas(informacoes):
             indice = escolha - 1
             entrada = informacoes[indice]
 
-            print("Site: ", entrada["site"])
+            print("\nSite: ", entrada["site"])
             print("Usuario: ", entrada["usuario"])
 
-            confirmar = input("Deseja visualizar a senha? (s/n): ").lower()
+            confirmar = input("\nDeseja visualizar a senha? (s/n): ").lower()
 
             if confirmar == "s":
-                print("Senha: ", entrada["senha"])
+                print("\nSenha: ", entrada["senha"])
             elif confirmar == "n":
-                print("Senha não exibida")
+                print("\nSenha não exibida")
             else:
-                print("Digite apenas S ou N.")
+                print("\nDigite apenas S ou N.")
 
         else:
-            print("Número inválido")
+            print("\nNúmero inválido")
 
 # EDITAR
 
@@ -95,7 +95,7 @@ def editar_senha(informacoes, objetoFernet, arquivo_senhas):
     try:
         escolha = int(input("\nDigite o número da senha que deseja editar: "))
     except ValueError:
-        print("Digite apenas um número.")
+        print("\nDigite apenas um número.")
         return
 
     if escolha >= 1 and escolha <= len(informacoes):
@@ -105,12 +105,12 @@ def editar_senha(informacoes, objetoFernet, arquivo_senhas):
         print("\nSite:", entrada["site"])
         print("Usuario atual:", entrada["usuario"])
 
-        novo_usuario = input("Digite o novo usuario/email: ")
+        novo_usuario = input("\nDigite o novo usuario/email: ")
         nova_senha = getpass.getpass("Digite a nova senha: ")
         confirmar_senha = getpass.getpass("Confirme a nova senha: ")
 
         if nova_senha != confirmar_senha:
-            print("As senhas não são iguais.")
+            print("\nAs senhas não são iguais.")
             return
         else:
             entrada["usuario"] = novo_usuario
@@ -137,7 +137,7 @@ def excluir_senha(informacoes, objetoFernet, arquivo_senhas):
     try:
         escolha = int(input("\nDigite o número da senha que deseja excluir: "))
     except ValueError:
-        print("Digite apenas um número.")
+        print("\nDigite apenas um número.")
         return
 
     if escolha >= 1 and escolha <= len(informacoes):

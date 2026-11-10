@@ -24,13 +24,12 @@ arquivo_senha_mestre = pasta_dados / "senha_mestre.bin"
 senha_mestre = inicializar_senha_mestre(arquivo_senha_mestre)
 
 if senha_mestre is None:
-    print('\n❌ Não foi possível continuar.')
+    print('\nNão foi possível continuar.')
     exit()
 else:
-    print("\n✅ Autenticação concluída")
+    print("\nAutenticação concluída")
 
 salt = inicializar_salt(arquivo_salt)
-
 objetoFernet = gerar_chave(senha_mestre, salt)
 informacoes = carregar_senhas(arquivo_senhas, objetoFernet)
 
@@ -38,7 +37,7 @@ informacoes = carregar_senhas(arquivo_senhas, objetoFernet)
 
 while True:
 
-    print("1 - Adicionar senha")
+    print("\n1 - Adicionar senha")
     print("2 - Listar senhas")
     print("3 - Editar senha")
     print("4 - Excluir senha")
