@@ -52,3 +52,8 @@ Cofre-de-Senhas/
 ├── cofre.py
 ├── LICENSE
 └── README.md
+
+## Como criar o executavel do cofre
+
+1 - cd Guardar_Senhas
+2 - pyinstaller --onefile --console --name CofreDeSenhas main.py
